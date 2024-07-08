@@ -1,5 +1,6 @@
 from botocore.exceptions import ClientError
 
+
 def create_rds_instance(
     rds_client,
     db_instance_identifier,
