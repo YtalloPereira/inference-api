@@ -8,7 +8,7 @@ class RequestSchema(BaseModel):
     arrival_year :int
     arrival_month :int
     arrival_date :int
-    type_of_meal_plan :object
-    room_type_reserved :object
-    market_segment_type :object
+    type_of_meal_plan :str
+    room_type_reserved :str
+    market_segment_type :str
     no_of_special_requests :int
