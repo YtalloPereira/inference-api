@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from api.schemas.inference_request import RequestSchema
-from api.schemas.inference_response import ResponseSchema
+from schemas.inference_request import RequestSchema
+from schemas.inference_response import ResponseSchema
+from utils.inference_script import make_inference
 
 router = APIRouter()
 
@@ -20,11 +21,9 @@ async def run_inference(request: RequestSchema):
             request.market_segment_type,
             request.no_of_special_requests
         ]]
-        #baixar model via s3 e usá-lo aqui
-        #prediction = model.predict(input_data)
-        ##result = 1  
 
-        #return ResponseSchema(result=int(prediction[0]))
-      
+        result = make_inference(input_data)
+        return ResponseSchema(result=result)
+    
     except Exception as err:
         raise HTTPException(status_code=500, detail=f"Erro durante a inferência: {str(err)}")
