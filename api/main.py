@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from api.routes import inference_route
+from routes.inference_route import router as api_router
 
 app = FastAPI()
 
-app.include_router(inference_route.router)
+app.include_router(api_router)
 
 if __name__ == "__main__":
     import uvicorn
