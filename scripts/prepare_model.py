@@ -45,11 +45,9 @@ with tarfile.open(zipped_model_folder) as tar:
     # Extract all files
     tar.extractall()
 
-
 if os.path.exists(xgboost_model_file):
     with open(xgboost_model_file, "rb") as f:
         file_header = f.read(4)
         print("File header:", file_header)
-
 
 os.remove(zipped_model_folder)

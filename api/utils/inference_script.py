@@ -36,14 +36,11 @@ training_columns = [
 model = xgb.Booster()
 model.load_model(xgboost_model_file)
 
+
 def make_inference(input):
     # Create a DataFrame from the input
-    df_input = pd.DataFrame(input, columns=[
-            "no_of_adults", "no_of_children", "required_car_parking_space", "lead_time",
-            "arrival_year", "arrival_month", "arrival_date",
-            "type_of_meal_plan", "room_type_reserved", "market_segment_type",
-            "no_of_special_requests"
-    ])
+    df_input = pd.DataFrame([input])
+
     # One-hot encode the categorical columns
     df_input = pd.get_dummies(
         data=df_input,
@@ -66,18 +63,14 @@ def make_inference(input):
 
     # Convert boolean columns to integer
     df_input = df_input * 1
+
     # Sort columns alphabetically
     df_input = df_input.sort_index(axis=1)
+
     # Preprocess the data
     dtest = xgb.DMatrix(df_input)
+
     # Predict
     prediction = model.predict(dtest)
-    print(df_input.columns)
-    return int (prediction[0]+1)
 
-
-
-
-
-
-
+    return int(prediction[0] + 1)
