@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from schemas.inference_request import RequestSchema
 from schemas.inference_response import ResponseSchema
 from utils.inference_script import make_inference
+from pydantic import ValidationError
 
 router = APIRouter()
 
@@ -24,6 +25,7 @@ async def run_inference(request: RequestSchema):
 
         result = make_inference(input_data)
         return ResponseSchema(result=result)
-    
+    except ValidationError as ve:
+       raise HTTPException(status_code=422, detail=f"Erro de validação: {str(ve)}")
     except Exception as err:
-        raise HTTPException(status_code=500, detail=f"Erro durante a inferência: {str(err)}")
+       raise HTTPException(status_code=500, detail=f"Erro durante a inferência: {str(err)}")
