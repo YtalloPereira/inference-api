@@ -7,7 +7,7 @@ from pydantic import ValidationError
 router = APIRouter()
 
 
-@router.post("/api/v1/inference", response_model=ResponseSchema)
+@router.post("/api/v1/inference", response_model=ResponseSchema, name="Make inference")
 async def run_inference(request: RequestSchema):
     try:
         input_data = request.model_dump()
