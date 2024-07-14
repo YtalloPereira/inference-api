@@ -17,9 +17,22 @@ O projeto Inference API foi desenvolvido como parte das sprints 4 e 5 do program
 - [👥 Contribuidores](#-contribuidores)
 
 ## ⚙️ Tecnologias Utilizadas
+- **Python** 
+     - **Biblioteca boto3** que possibilita a integração com os serviços da aws utilizados
+     - **FastAPI** para criação de um endpoint para cosulta ao modelo
+     - **Numpy e pandas** para o tratamento de dados
+- **AWS** 
+     - **SageMaker** para o treinamento do modelo de aprendizagem
+     - **RDS** para trabalhar as bases de dados
+     - **EC2** para deploy da aplicação
+     - **S3** para armazenar o modelo de aprendizado
+- **Docker e Docker Compose** 
+     - **criar imagem** do projeto e executá-lo localmente por linha de comando e arquivo de configuração
+- **Jupyter Notebooks**
+     - Para execução dos códigos da análise de dados
 
 ## 🏛️ Arquitetura
-
+   ![Esquema mostrando a cloud aws com usuários acessando api gateway esta recebendo o modelo do bucket s3. Sagemaker ligado ao bucket para fornecer o modelo e ao RDS para ler e atualizar o dataset.](assets/sprint4-5.jpg)
 ## 🚀 Execução e Utilização
 
 ### Pré-requisitos
@@ -149,7 +162,44 @@ Para mais informações sobre os comandos e flags fornecidas no passo a passo, a
 5. Aguardar a criação da instância e configuração do container, e depois de alguns minutos acessar o ip público da instância que pode ser visto acessando a instância em execução na página das instâncias EC2 no console AWS.
 
 ## 🧱 Estrutura do projeto
-
+```plaintext
+.
+├── .venv/
+├── api/
+├── assets/
+├── ml-lab/
+│   ├── dataset/
+│   ├── env/
+│   ├── iam/
+│   ├── rds/
+│   ├── s3/
+├── scripts/
+├── .env
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── dockerfile
+├── README.md
+├── requirements.txt
+```
+---
+- **.venv/** - Contém as dependência do sistema.
+- **api/** - Contém as rotas, esquemas e utilitários da API.
+- **assets/** - Contém os diagramas dos esquemas de arquitetura e do dataset.
+- **ml-lab/** - Contém os notebooks responsáveis pela análise e tratamento de dados além da criação do modelo.
+  - **dataset/** - Contém o dataset base.
+  - **env/** - Contém variáveis de ambiente relacionadas a configuração dos serviços AWS.
+  - **iam/** - Contém scripts para a criação, anexação e recuperação de roles IAM.
+  - **rds/** - Contém scripts para a criação da engine do rds bem como a crição e obtenção de instâncias.
+  - **s3/** - Contém scripts para a criação de uma instância S3.
+- **scripts/** - Contém scipts utilitários para a execução do docker e a preparação do modelo para uso.
+- **.env** - Arquivo de configuração das variáveis de ambiente.
+- **.env.example** - Exemplo do arquivo `.env` com as variáveis de ambiente necessárias.
+- **.gitignore** - Arquivo de configuração para ignorar arquivos no Git.
+- **docker-compose.yml** - Arquivo de configuração para construção e execução do projeto com Docker Compose.
+- **Dockerfile** - Arquivo de configuração para a construção da imagem Docker.
+- **README.md** - Documentação do projeto.
+- **requirements.txt** - Arquivo contendo quais dependências são instaladas no projeto bem como suas respectivas versões
 ## 🚧 Desafios e Soluções
 
 ## 👥 Contribuidores
