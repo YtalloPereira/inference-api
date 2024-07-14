@@ -1,12 +1,7 @@
-
-
 services:
   api-app:
     container_name: fastapi-container
     build: .
     image: api-image:latest
     ports:
-      - "80:8000" 
-    
-
-    
+      - "80:8000"
