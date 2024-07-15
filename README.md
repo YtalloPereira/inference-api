@@ -7,6 +7,7 @@ O projeto Inference API foi desenvolvido como parte das sprints 4 e 5 do program
 - [📝 Descrição do projeto](#-inference-api)
 - [⚙️ Tecnologias utilizadas](#️-tecnologias-utilizadas)
 - [🏛️ Arquitetura](#️-arquitetura)
+- [🔎 Sobre o Modelo](#-sobre-o-modelo)
 - [🚀 Execução e utilização](#-execução-e-utilização)
   - [Pré-requisitos](#pré-requisitos)
   - [Passos para execução local dos notebooks com o Jupyter Notebooks](#passos-para-execução-local-dos-notebooks-com-o-jupyter-notebooks)
@@ -17,22 +18,41 @@ O projeto Inference API foi desenvolvido como parte das sprints 4 e 5 do program
 - [👥 Contribuidores](#-contribuidores)
 
 ## ⚙️ Tecnologias Utilizadas
-- **Python** 
-     - **Biblioteca boto3** que possibilita a integração com os serviços da aws utilizados
-     - **FastAPI** para criação de um endpoint para cosulta ao modelo
-     - **Numpy e pandas** para o tratamento de dados
-- **AWS** 
-     - **SageMaker** para o treinamento do modelo de aprendizagem
-     - **RDS** para trabalhar as bases de dados
-     - **EC2** para deploy da aplicação
-     - **S3** para armazenar o modelo de aprendizado
-- **Docker e Docker Compose** 
-     - **criar imagem** do projeto e executá-lo localmente por linha de comando e arquivo de configuração
-- **Jupyter Notebooks**
-     - Para execução dos códigos da análise de dados
+
+- **Python**
+  - **Boto3** para possibilitar a integração com os serviços utilizados da AWS
+  - **FastAPI** para criação de uma API com endpoint de consulta ao modelo
+  - **Pandas, Numpy, Matplotlib, Sklearn, Seaborn** para a análise, tratamento, previsão e avaliação dos dados
+- **AWS**
+  - **SageMaker** para o treinamento do modelo de aprendizagem
+  - **RDS** para trabalhar as bases de dados
+  - **EC2** para deploy da aplicação
+  - **S3** para armazenar o modelo de aprendizado
+- **Docker e Docker Compose** para criar imagem do projeto e executá-lo localmente por linha de comando e arquivo de configuração
+- **Jupyter Notebooks** para a criação dos notebooks de ciência de dados
+- **Git/Github** para o controle de versão do código
+- **Trello** para o gerenciamento e organização das tarefas do projeto
 
 ## 🏛️ Arquitetura
-   ![Esquema mostrando a cloud aws com usuários acessando api gateway esta recebendo o modelo do bucket s3. Sagemaker ligado ao bucket para fornecer o modelo e ao RDS para ler e atualizar o dataset.](assets/sprint4-5.jpg)
+
+![Esquema arquitetura](assets/sprint4-5.jpg)
+
+- **Code:** Implementação do código pela equipe de programadores.
+- **RDS:** Armazenamento do dataset original e processado.
+- **SageMaker:** Treinamento do modelo.
+- **S3:** Armazenamento do modelo e dos dados de treinamento e teste.
+- **EC2:** Execução do container docker com a API de inferência com o modelo em ambiente da nuvem para expor aos usuários.
+
+## 🔎 Sobre o Modelo
+
+- Das 19 colunas do dataset, foram escolhidas 11 colunas, e as demais foram removidas baseado na exploração dos dados, onde foram avaliados as estatisticas, frequência, correlação e variância, e ao final foi obtido o resultado de que além da coluna ``avg_price_per_room``, era necessário remover outras colunas para se obter um melhor resultado no treinamento do modelo, que foram esssas: ``Booking_ID``, ``booking_status``, ``no_of_weekend_nights``, ``no_of_week_nights``, ``repeated_guest``, ``no_of_previous_cancellations``, ``no_of_previous_bookings_not_canceled``.
+
+- Durante o treinamento, o framework escolhido para classificaçaõ foi o ``XGBoost`` por conta da sua eficiência em trabalhar com grandes bases de dados, a opção que ele disponibiliza para treinamento de classificação, o que é necessário neste projeto, resultados comprovados e a eficiência final no modelo treinado.
+
+- Foram necessários definir alguns hiperparâmetros para o treinamento para obter melhor eficiência e resultado, dentre eles o principal foi o objective ``multi:softmax`` e o num_class como ``3`` para poder trabalhar com problemas de classificação de 3 classes que é o objetivo alvo do projeto, e além dele, foi definido também o eval_metric como ``mlogloss``, alpha como ``0.9975...``, eta como ``0.3825...``, min_child_weight como ``3.9469`` e num_round como ``259``.
+
+- Ao final, o modelo obteve uma acurácia de ``0.8493``, o que foi considerada como boa.
+
 ## 🚀 Execução e Utilização
 
 ### Pré-requisitos
@@ -162,10 +182,15 @@ Para mais informações sobre os comandos e flags fornecidas no passo a passo, a
 5. Aguardar a criação da instância e configuração do container, e depois de alguns minutos acessar o ip público da instância que pode ser visto acessando a instância em execução na página das instâncias EC2 no console AWS.
 
 ## 🧱 Estrutura do projeto
+
 ```plaintext
 .
 ├── .venv/
 ├── api/
+│   ├── routes/
+│   ├── schemas/
+│   ├── utils/
+│   ├── main.py
 ├── assets/
 ├── ml-lab/
 │   ├── dataset/
@@ -173,6 +198,7 @@ Para mais informações sobre os comandos e flags fornecidas no passo a passo, a
 │   ├── iam/
 │   ├── rds/
 │   ├── s3/
+│   ├── notebooks.ipynb
 ├── scripts/
 ├── .env
 ├── .env.example
@@ -182,37 +208,49 @@ Para mais informações sobre os comandos e flags fornecidas no passo a passo, a
 ├── README.md
 ├── requirements.txt
 ```
+
 ---
-- **.venv/** - Contém as dependência do sistema.
+
+- **.venv/** - Contém as dependência da aplicação e dos notebooks.
 - **api/** - Contém as rotas, esquemas e utilitários da API.
+  - **routes/** - Contém as rotas da API.
+  - **utils/** - Contém os esquemas da API.
+  - **schemas/** - Contém os utilitários da API.
+  - **main.py** - Arquivo principal para execuçã da API.
 - **assets/** - Contém os diagramas dos esquemas de arquitetura e do dataset.
 - **ml-lab/** - Contém os notebooks responsáveis pela análise e tratamento de dados além da criação do modelo.
   - **dataset/** - Contém o dataset base.
   - **env/** - Contém variáveis de ambiente relacionadas a configuração dos serviços AWS.
   - **iam/** - Contém scripts para a criação, anexação e recuperação de roles IAM.
   - **rds/** - Contém scripts para a criação da engine do rds bem como a crição e obtenção de instâncias.
-  - **s3/** - Contém scripts para a criação de uma instância S3.
-- **scripts/** - Contém scipts utilitários para a execução do docker e a preparação do modelo para uso.
+  - **s3/** - Contém scripts para a criação de um bucket S3 se ele não existir.
+- **scripts/** - Contém scipts utilitários para a execução do docker no EC2 e a preparação do modelo para uso.
 - **.env** - Arquivo de configuração das variáveis de ambiente.
 - **.env.example** - Exemplo do arquivo `.env` com as variáveis de ambiente necessárias.
-- **.gitignore** - Arquivo de configuração para ignorar arquivos no Git.
+- **.gitignore** - Arquivo de configuração para ignorar arquivos no repositório Git.
 - **docker-compose.yml** - Arquivo de configuração para construção e execução do projeto com Docker Compose.
 - **Dockerfile** - Arquivo de configuração para a construção da imagem Docker.
 - **README.md** - Documentação do projeto.
-- **requirements.txt** - Arquivo contendo quais dependências são instaladas no projeto bem como suas respectivas versões
+- **requirements.txt** - Arquivo contendo quais dependências são instaladas no projeto bem como suas respectivas versões.
+- **xgboost-model** - Arquivo bin com o modelo treinado para fazer inferência na aplicação, ele é baixado quando se executa o script prepare_model.py após a criação do modelo no SageMaker.
+
 ## 🚧 Desafios e Soluções
 
 ### Compreenção do problema
-Levamos um tempo para compreender a proposta da sprint. Revisitando algumas vezes o readmen e tirando algumas dúvidas nas dailys conseguimos compreender melhor
+
+Levamos um tempo para compreender a proposta da sprint, revisitando algumas vezes o readme e tirando algumas dúvidas nas dailys conseguimos compreender melhor
 
 ### Concepção da Solução
+
 Foi bastante demorado a concepção da solução pois não soubemos imediatamente como solucionaríamos o problema, como por exemplo que algoritmo de aprendizado usaríamos ou como processaríamos e analisaríamos os dados.
 
 ### Integração com os Serviços AWS em Ambiente Local
+
 Era requisito usarmos o sagemaker localmente para evitar custos extras, sendo assim tivemos que fazer um esforço extra para descobrir como integrar os serviços aws ao nosso ambiente local
 
 ## Inferência
-Enfretamos um problema com a inferência onde de acordo com a ordem dos dados inseridos o resultado mudava drasticamente 
+
+Enfretamos um problema com a inferência onde de acordo com a ordem dos dados inseridos o resultado mudava drasticamente, então foi necessário ordernar as colunas durante o treinamento e durante a inferência
 
 ## 👥 Contribuidores
 
