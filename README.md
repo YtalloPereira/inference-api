@@ -79,9 +79,7 @@ Este guia fornece instruções passo a passo para configurar e fazer a execuçã
 3. Clone e abra projeto no VSCode:
 
     ```bash
-   git clone -b grupo-6 --single-branch https://github.com/Compass-pb-aws-2024-MAIO-A/sprints-4-5-pb-aws-maio.git
-   cd sprints-4-5-pb-aws-maio
-   code .
+   git clone https://github.com/YtalloPereira/inference-api
    ```
 
 4. Instale as dependências:
