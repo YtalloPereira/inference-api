@@ -234,24 +234,6 @@ Para mais informações sobre os comandos e flags fornecidas no passo a passo, a
 - **requirements.txt** - Arquivo contendo quais dependências são instaladas no projeto bem como suas respectivas versões.
 - **xgboost-model** - Arquivo bin com o modelo treinado para fazer inferência na aplicação, ele é baixado quando se executa o script prepare_model.py após a criação do modelo no SageMaker.
 
-## 🚧 Desafios e Soluções
-
-### Compreenção do problema
-
-Levamos um tempo para compreender a proposta da sprint, revisitando algumas vezes o readme e tirando algumas dúvidas nas dailys conseguimos compreender melhor
-
-### Concepção da Solução
-
-Foi bastante demorado a concepção da solução pois não soubemos imediatamente como solucionaríamos o problema, como por exemplo que algoritmo de aprendizado usaríamos ou como processaríamos e analisaríamos os dados.
-
-### Integração com os Serviços AWS em Ambiente Local
-
-Era requisito usarmos o sagemaker localmente para evitar custos extras, sendo assim tivemos que fazer um esforço extra para descobrir como integrar os serviços aws ao nosso ambiente local
-
-## Inferência
-
-Enfretamos um problema com a inferência onde de acordo com a ordem dos dados inseridos o resultado mudava drasticamente, então foi necessário ordernar as colunas durante o treinamento e durante a inferência
-
 ## 👥 Contribuidores
 
 - **[João Guilherme](https://github.com/Joao-Patriota)**
