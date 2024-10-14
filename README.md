@@ -1,6 +1,6 @@
 # 🎥 Inference API
 
-O projeto Inference API foi desenvolvido como parte das sprints 4 e 5 do programa de bolsas Compass UOL para formação em machine learning na AWS. Ele consiste em uma API que realiza inferência com um modelo de machine learning treinado com o framework XGBoost no Amazon SageMaker.
+O projeto Inference API consiste em uma API que realiza inferência com um modelo de machine learning treinado com o framework XGBoost no Amazon SageMaker.
 
 ## 📖 Índice
 
